@@ -102,6 +102,7 @@ piDoMUS<dim, spacedim, LAC>::piDoMUS (const std::string &name,
 
   ida("IDA Solver Parameters", comm),
   imex("IMEX Parameters", comm),
+  ls("Linear Stepper Parameters", comm),
   we_are_parallel(Utilities::MPI::n_mpi_processes(comm) > 1),
   lambdas(*this)
 {
@@ -179,6 +180,7 @@ piDoMUS<dim, spacedim, LAC>::piDoMUS (const std::string &name,
 
   ida("IDA Solver Parameters"),
   imex("IMEX Parameters"),
+  ls("Linear Solver Parameters"),
   we_are_parallel(false),
   lambdas(*this)
 {
@@ -242,6 +244,17 @@ void piDoMUS<dim, spacedim, LAC>::run ()
           imex.jacobian_vmult = lambdas.jacobian_vmult;
           imex.solve_dae(solution, solution_dot);
         }
+      else if (time_stepper == "linear euler")
+      {
+          current_alpha = ls.get_alpha();
+          ls.create_new_vector = lambdas.create_new_vector;
+          ls.residual = lambdas.residual;
+          ls.setup_jacobian = lambdas.setup_jacobian;
+          ls.solver_should_restart = lambdas.solver_should_restart;
+          ls.solve_jacobian_system = lambdas.solve_jacobian_system;
+          ls.output_step = lambdas.output_step;
+          ls.solve_dae(solution, solution_dot);
+      }
       eh.error_from_exact(interface.get_error_mapping(), *dof_handler, locally_relevant_solution, exact_solution);
     }
 

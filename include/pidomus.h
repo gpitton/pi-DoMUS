@@ -45,6 +45,7 @@
 #include <deal2lkit/parameter_acceptor.h>
 #include <deal2lkit/ida_interface.h>
 #include <deal2lkit/imex_stepper.h>
+#include <deal2lkit/linear_stepper.h>
 #include <deal2lkit/parsed_zero_average_constraints.h>
 #include <deal2lkit/parsed_mapped_functions.h>
 #include <deal2lkit/parsed_dirichlet_bcs.h>
@@ -434,6 +435,7 @@ private:
 
   IDAInterface<typename LAC::VectorType>  ida;
   IMEXStepper<typename LAC::VectorType> imex;
+  LinearStepper<typename LAC::VectorType> ls;
 
 
   std::vector<types::global_dof_index> dofs_per_block;

@@ -58,7 +58,7 @@ declare_parameters (ParameterHandler &prm)
                   &time_stepper,
                   "Time stepper",
                   "imex",
-                  Patterns::Selection("ida|euler|imex")); //imex
+                  Patterns::Selection("ida|euler|imex|linear euler")); //imex
 
   add_parameter(  prm,
                   &use_space_adaptivity,
